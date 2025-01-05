@@ -1,6 +1,6 @@
 FROM wordpress:latest
 
-ARG USER
+ARG USER_UID
 ARG UID
 
 WORKDIR /var/www/html
@@ -8,12 +8,12 @@ WORKDIR /var/www/html
 COPY wordpress/ .
 
 # Criando usuário com as mesmas característcas do usuário host
-RUN if [ "$USER" != "root" ]; then echo "Creating $USER" && \
-    useradd -G www-data,root -u $UID -d /home/$USER $USER && \ 
-    mkdir -p /home/$USER/.compose && \
-    chown -R $USER:$USER /home/$USER;fi;
+RUN if [ "$USER_UID" != "root" ]; then echo "Creating $USER_UID" && \
+    useradd -G www-data,root -u $UID -d /home/$USER_UID $USER_UID && \ 
+    mkdir -p /home/$USER_UID/.compose && \
+    chown -R $USER_UID:$USER_UID /home/$USER_UID;fi;
 
 
 # Ajusta permissões da pasta de armazenamento e cache para o Laravel funcionar corretamente
-RUN chown -R $USER:$USER /var/www/html 
-USER $USER
+RUN chown -R $USER_UID:$USER_UID /var/www/html 
+USER $USER_UID
